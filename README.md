@@ -4,12 +4,14 @@
 
 - 创建链表头节点
 - 在指定位置添加节点
+- 在指定位置删除节点
 - 打印链表内容
 - 释放链表内存
 
 ## 使用示例
 
 ```c
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,7 +29,7 @@ struct LinkNode* creatList()
 	return nodehead;
 }
 
-int realnumber(struct LinkNode* head)
+int vaildnumber(struct LinkNode* head)
 {
 	struct LinkNode* t = head;  
 	int i;
@@ -48,7 +50,7 @@ struct LinkNode* add(int place , int x , struct LinkNode* head)
 	nodewant->data = x;
 
 	int i ; 
-	i = realnumber(head);
+	i = vaildnumber(head);
 	if(place < 0 || i<place)  //判断输入位置是否合法
 	{
 		printf("***输入位置不合法***");
@@ -64,6 +66,37 @@ struct LinkNode* add(int place , int x , struct LinkNode* head)
 	temp->next = nodewant;
 
 	return head;
+}
+
+struct LinkNode* del(int place,  struct LinkNode* head)
+{
+	int i = vaildnumber(head);
+	if (place > i-1 || place < 0)
+	{
+		if(i == 0)
+		{
+			printf("空链表无元素可删除");
+			return head;
+		}
+		else
+		{
+			printf("***删除位置不合法***");
+			return head;
+		}
+	}
+	else
+	{
+		struct LinkNode* temp = head;
+		while (place)
+		{
+			temp = temp->next;
+			place--;
+		}
+		struct LinkNode* deletenode = temp->next;
+		temp->next = deletenode->next;
+		free(deletenode);
+		return head;
+	}
 }
 
 void print(struct LinkNode* head)
@@ -96,11 +129,16 @@ void freeList(struct LinkNode* head)
 	}
 }
 
-int main() {
-    struct LinkNode* list = creatList();
-    list = add(0, 10, list);
-    list = add(0, 20, list);
-    print(list); // 输出: 20 -> 10
-    freeList(list);
-    return 0;
+int main()
+{
+	struct LinkNode* List = NULL;
+	List = creatList();
+	List = add(0, 10, List);
+	List = add(0, 20, List);
+	List = add(0, 30, List);
+	List = add(0, 40, List);
+	List = del(2, List);
+	print(List);
+	freeList(List);
+	return 0;
 }
