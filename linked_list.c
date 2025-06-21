@@ -16,9 +16,9 @@ struct LinkNode* creatList()
 	return nodehead;
 }
 
-int realnumber(struct LinkNode* head)
+int vaildnumber(struct LinkNode* head)
 {
-	struct LinkNode* t = head;  
+	struct LinkNode* t = head;
 	int i;
 	for (i = 0; t->next != NULL; i++)
 	{
@@ -27,7 +27,7 @@ int realnumber(struct LinkNode* head)
 	return i;
 }
 
-struct LinkNode* add(int place , int x , struct LinkNode* head)
+struct LinkNode* add(int place, int x, struct LinkNode* head)
 {
 	struct LinkNode* nodewant = (struct LinkNode*)malloc(sizeof(struct LinkNode));
 	//为新的节点申请一份内存空间
@@ -36,23 +36,54 @@ struct LinkNode* add(int place , int x , struct LinkNode* head)
 
 	nodewant->data = x;
 
-	int i ; 
-	i = realnumber(head);
-	if(place < 0 || i<place)  //判断输入位置是否合法
+	int i;
+	i = vaildnumber(head);
+	if (place < 0 || i < place)  //判断输入位置是否合法
 	{
 		printf("***输入位置不合法***");
 		return head;
-	}           
+	}
 
-	while (p)  
-	{          
-		temp = temp->next;  
+	while (p)
+	{
+		temp = temp->next;
 		p--;
 	}
 	nodewant->next = temp->next;
 	temp->next = nodewant;
 
 	return head;
+}
+
+struct LinkNode* del(int place, struct LinkNode* head)
+{
+	int i = vaildnumber(head);
+	if (place > i - 1 || place < 0)
+	{
+		if (i == 0)
+		{
+			printf("空链表无元素可删除");
+			return head;
+		}
+		else
+		{
+			printf("***删除位置不合法***");
+			return head;
+		}
+	}
+	else
+	{
+		struct LinkNode* temp = head;
+		while (place)
+		{
+			temp = temp->next;
+			place--;
+		}
+		struct LinkNode* deletenode = temp->next;
+		temp->next = deletenode->next;
+		free(deletenode);
+		return head;
+	}
 }
 
 void print(struct LinkNode* head)
@@ -68,7 +99,7 @@ void print(struct LinkNode* head)
 		{
 			temp = temp->next;
 			printf("%d", temp->data);
-			if(temp->next != NULL)
+			if (temp->next != NULL)
 				printf(" -> ");
 		}
 	}
@@ -76,7 +107,7 @@ void print(struct LinkNode* head)
 
 void freeList(struct LinkNode* head)
 {
-	struct LinkNode* temp= head;
+	struct LinkNode* temp = head;
 	while (temp != NULL)
 	{
 		head = temp->next;
@@ -89,8 +120,11 @@ int main()
 {
 	struct LinkNode* List = NULL;
 	List = creatList();
-	List = add(0,10,List);
-	List = add(0,20,List);
+	List = add(0, 10, List);
+	List = add(0, 20, List);
+	List = add(0, 30, List);
+	List = add(0, 40, List);
+	List = del(2, List);
 	print(List);
 	freeList(List);
 	return 0;
