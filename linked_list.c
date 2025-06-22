@@ -55,6 +55,36 @@ struct LinkNode* add(int place, int x, struct LinkNode* head)
 	return head;
 }
 
+struct LinkNode* changenode(int place, int x, struct LinkNode* head)
+{
+	struct LinkNode* changenode = head->next;
+	int i = vaildnumber(head);
+	int p = place;
+	if (head->next == NULL)
+	{
+		printf("链表为空，无法修改，请先添加元素");
+		return head;
+	}
+	else
+	{
+		if (place<0 || place>i - 1)
+		{
+			printf("***修改位置不合法***");
+			return head;
+		}
+		else
+		{
+			while (p)
+			{
+				changenode = changenode->next;
+				p--;
+			}
+			changenode->data = x;
+			return head;
+		}
+	}
+}
+
 struct LinkNode* del(int place, struct LinkNode* head)
 {
 	int i = vaildnumber(head);
@@ -125,6 +155,7 @@ int main()
 	List = add(0, 30, List);
 	List = add(0, 40, List);
 	List = del(2, List);
+	List = changenode(1, 100, List);
 	print(List);
 	freeList(List);
 	return 0;
